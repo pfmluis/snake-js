@@ -1,0 +1,22 @@
+{
+  "name": "snake-js",
+  "version": "1.0.0",
+  "description": "A snake version in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pfmluis/snake-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pfmluis/snake-js/issues"
+  },
+  "homepage": "https://github.com/pfmluis/snake-js#readme",
+  "devDependencies": {
+    "webpack": "^5.52.0"
+  }
+}
