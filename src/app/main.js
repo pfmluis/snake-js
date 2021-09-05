@@ -29,7 +29,7 @@ export default () => {
     const frame = drawFrame(mapContainer);
     app.stage.addChild(frame);
 
-    app.ticker.add((delta) => { map.redrawMap(); console.log(delta) })
+    app.ticker.add(() => { map.redrawMap(); })
 
     document.body.appendChild(app.view);
 
