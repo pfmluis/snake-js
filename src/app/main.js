@@ -4,8 +4,8 @@ import { Map } from './map';
 import centerStageHelper from './utils/center-stage-helper';
 import resizeHelper from './utils/resize-helper';
 import { Snake } from './snake';
-import { fillCell } from './utils/map-helper';
 import { getSnakesInitialPosition } from './utils/snake-helper'
+import { setupKeyboardMaps } from './utils/keyboard-helpers';
 
 export default () => {
     const app = new Application({
@@ -13,23 +13,32 @@ export default () => {
         height: window.innerHeight, 
     });
 
-    const map = new Map();
-    const mapArray = map.mapArray;
-    const mapContainer = map.mapContainer;
-
+    
     const snakeInitialPosition = getSnakesInitialPosition();
     const snake = new Snake(snakeInitialPosition.x, snakeInitialPosition.y);
+    
+    const map = new Map(snake);
+    map.updateMap(snake.snakeArray);
+    map.spawnApple();
+    map.redrawMap();
 
-    snake.snakeArray.forEach(node => {
-        const snakeNode = mapArray[node.x][node.y];
-
-        fillCell(snakeNode);
-    });
-
-    const frame = drawFrame(mapContainer);
+    const frame = drawFrame(map.mapContainer);
     app.stage.addChild(frame);
 
-    app.ticker.add(() => { map.redrawMap(); })
+    setupKeyboardMaps(snake);
+    
+    const ticker = () => {
+        snake.move();
+        map.updateMap();
+        map.checkGameRules();
+        map.redrawMap();
+
+        setTimeout(() => {
+            requestAnimationFrame(ticker);
+        }, 100);
+    }
+
+    ticker();
 
     document.body.appendChild(app.view);
 
