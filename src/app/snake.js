@@ -12,17 +12,17 @@ export class Snake {
             x: initialX,
             y: initialY,
             vy: 0,
-            vx: 0
+            vx: 1
         }, {
             x: initialX - 1,
             y: initialY,
             vy: 0,
-            vx: 0
+            vx: 1
         }, {
             x: initialX - 2,
             y: initialY,
             vy: 0,
-            vx: 0
+            vx: 1
         }];
     }
 
@@ -46,7 +46,8 @@ export class Snake {
             x: snakeHead.x + this.vx,
             y:snakeHead.y + this.vy,
             vx: this.vx,
-            vy: this.vy
+            vy: this.vy,
+            isCorner: snakeHead.vx !== this.vx || snakeHead.vy !== this.vy
         });
         this.snakeArray.pop();
     }
@@ -62,28 +63,28 @@ export class Snake {
     }
 
     moveUp() {
-        if (this.head.vy !== 0) { return }
+        if (this.head.vy === 1) { return }
 
         this.vy = -1;
         this.vx = 0;
     }
 
     moveDown() {
-        if (this.head.vy !== 0) { return }
+        if (this.head.vy === -1) { return }
 
         this.vy = 1;
         this.vx = 0;
     }
 
     moveLeft() {
-        if (this.head.vx !== 0) { return }
+        if (this.head.vx === 1) { return }
 
         this.vy = 0;
         this.vx = -1;
     }
 
     moveRight() {
-        if (this.head.vx !== 0) { return }
+        if (this.head.vx === -1) { return }
 
         this.vy = 0;
         this.vx = 1;

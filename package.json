@@ -26,6 +26,7 @@
     "webpack-dev-server": "^4.1.0"
   },
   "dependencies": {
+    "hammerjs": "^2.0.8",
     "pixi.js": "^6.1.2"
   }
 }
