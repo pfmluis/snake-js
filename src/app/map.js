@@ -93,23 +93,35 @@ export class Map {
                     });
                 } else if (cell.hasSnake) {
                     if (cell.isHead) {
-                        const texture = this.resources.apple.texture;
+                        const texture = this.resources.snakeHead.texture;
                         texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
                         const rotation = getSnakeBodyTextureRotation(cell);
     
                         cell.beginTextureFill({
                             texture,
-                            matrix: new Matrix().rotate(rotation),
+                            matrix: new Matrix().rotate(rotation)
                         });
                     } else if (cell.isTail) {
-                        const texture = this.resources.apple.texture;
-                        texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-                        const rotation = getSnakeBodyTextureRotation(cell);
-    
-                        cell.beginTextureFill({
-                            texture,
-                            matrix: new Matrix().rotate(rotation),
-                        });
+                        if (cell.isCorner) {
+                            const texture = this.resources.snakeCorner.texture;
+                            texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+                            const rotation = getSnakeCornerTextureRotation(cell.previousNode, cell.nextNode);
+        
+                            cell.beginTextureFill({
+                                texture,
+                                matrix: new Matrix()
+                                    .rotate(rotation)
+                            });
+                        } else {
+                            const texture = this.resources.snakeTail.texture;
+                            texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+                            const rotation = getSnakeBodyTextureRotation(cell);
+        
+                            cell.beginTextureFill({
+                                texture,
+                                matrix: new Matrix().rotate(rotation)
+                            });
+                        }
                     } else if (cell.isCorner) {
                         const texture = this.resources.snakeCorner.texture;
                         texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
@@ -117,7 +129,7 @@ export class Map {
     
                         cell.beginTextureFill({
                             texture,
-                            matrix: new Matrix().rotate(rotation),
+                            matrix: new Matrix().rotate(rotation)
                         });
                     } else {
                         const texture = this.resources.snakeBody.texture;
@@ -126,7 +138,7 @@ export class Map {
     
                         cell.beginTextureFill({
                             texture,
-                            matrix: new Matrix().rotate(rotation),
+                            matrix: new Matrix().rotate(rotation)
                         });
                     }
                 }

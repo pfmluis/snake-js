@@ -2,7 +2,7 @@ import { Application, Loader } from 'pixi.js';
 import { drawFrame } from './frame';
 import { Map } from './map';
 import centerStageHelper from './utils/center-stage-helper';
-import resizeHelper from './utils/resize-helper';
+import resizeHelper, { resize } from './utils/resize-helper';
 import { Snake } from './snake';
 import { getSnakesInitialPosition } from './utils/snake-helper'
 import { setupKeyboardMaps } from './utils/keyboard-helpers';
@@ -18,10 +18,12 @@ export default () => {
     const loader = new Loader();
 
     loader
-        .add('apple', 'apple2.png')
+        .add('apple', 'apple.png')
         .add('map', 'map.png')
         .add('snakeBody', 'snake-body.png')
         .add('snakeCorner', 'snake-corner.png')
+        .add('snakeHead', 'snake-head.png')
+        .add('snakeTail', 'snake-tail.png')
         .load((_, resources) => {
 
             const snakeInitialPosition = getSnakesInitialPosition();
@@ -54,5 +56,6 @@ export default () => {
             document.body.appendChild(app.view);
             centerStageHelper(app);
             resizeHelper(app);
+            resize(app);
         })
 }

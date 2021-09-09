@@ -10,8 +10,9 @@ export const drawFrame = (map, texture) => {
     frame.addChild(map);
     frame.beginTextureFill({
         texture,
+        matrix: new Matrix()
     });
     frame.drawRect(0, 0, MAP_WIDTH * CELL_WIDTH, MAP_HEIGHT * CELL_HEIGHT);
-
+    
     return frame;
 }
