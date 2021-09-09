@@ -51,19 +51,18 @@ export class Map {
                 const cell = this.mapArray[x][y];
                 const snakeNode = this.snake.snakeArray.find((node) => node.x === x && node.y === y);
                 const snakeNodeIndex = this.snake.snakeArray.indexOf(snakeNode);
-                const previousNode = this.snake.snakeArray[snakeNodeIndex - 1];
-                const nextNode = this.snake.snakeArray[snakeNodeIndex + 1];
 
-
-                if (!!snakeNode) {
-                    cell.changed = !!cell.empty
+                if (snakeNode) {
+                    cell.changed = true;
                     cell.empty = false;
                     cell.hasSnake = true;
                     cell.vx = snakeNode.vx;
                     cell.vy = snakeNode.vy;
                     cell.isCorner = snakeNode.isCorner;
-                    cell.previousNode = previousNode;
-                    cell.nextNode = nextNode;
+                    cell.previousNode = this.snake.snakeArray[snakeNodeIndex];
+                    cell.nextNode = this.snake.snakeArray[snakeNodeIndex - 1];
+                    cell.isHead = snakeNode.isHead;
+                    cell.isTail = snakeNode.isTail;
                 } else {
                     cell.changed = !cell.empty
                     cell.empty = true && !cell.hasApple;
@@ -73,6 +72,8 @@ export class Map {
                     cell.isCorner = false;
                     cell.previousNode = undefined;
                     cell.nextNode = undefined;
+                    cell.isHead = false;
+                    cell.isTail = false;
                 }
             }
         }
@@ -91,16 +92,34 @@ export class Map {
                         texture,
                     });
                 } else if (cell.hasSnake) {
-                    // if (cell.isCorner) {
-                    //     const texture = this.resources.snakeBody.texture;
-                    //     texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-                    //     const rotation = getSnakeCornerTextureRotation(cell.previousNode, cell.nextNode);
+                    if (cell.isHead) {
+                        const texture = this.resources.apple.texture;
+                        texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+                        const rotation = getSnakeBodyTextureRotation(cell);
     
-                    //     cell.beginTextureFill({
-                    //         texture,
-                    //         matrix: new Matrix().rotate(rotation),
-                    //     });
-                    // } else {
+                        cell.beginTextureFill({
+                            texture,
+                            matrix: new Matrix().rotate(rotation),
+                        });
+                    } else if (cell.isTail) {
+                        const texture = this.resources.apple.texture;
+                        texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+                        const rotation = getSnakeBodyTextureRotation(cell);
+    
+                        cell.beginTextureFill({
+                            texture,
+                            matrix: new Matrix().rotate(rotation),
+                        });
+                    } else if (cell.isCorner) {
+                        const texture = this.resources.snakeCorner.texture;
+                        texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+                        const rotation = getSnakeCornerTextureRotation(cell.previousNode, cell.nextNode);
+    
+                        cell.beginTextureFill({
+                            texture,
+                            matrix: new Matrix().rotate(rotation),
+                        });
+                    } else {
                         const texture = this.resources.snakeBody.texture;
                         texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
                         const rotation = getSnakeBodyTextureRotation(cell);
@@ -109,7 +128,7 @@ export class Map {
                             texture,
                             matrix: new Matrix().rotate(rotation),
                         });
-                    // }
+                    }
                 }
                 cell.drawRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
             }

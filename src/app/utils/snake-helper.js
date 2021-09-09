@@ -22,17 +22,17 @@ export const getSnakeBodyTextureRotation = (cell) => {
 
 export const getSnakeCornerTextureRotation = (previousNode, nextNode) => {
 
-    if (!nextNode || previousNode) {
-        return 0;
+    if (!nextNode || !previousNode) {
+        return undefined;
     }
 
-    if ((previousNode.vy === -1 && nextNode.vx === 1) || (previousNode.vx === -1 && nextNode.vy === 1)) {
+    if ((previousNode.vx === -1 && nextNode.vy === 1) || (previousNode.vy === -1 && nextNode.vx === 1)) {
         return 0;
-    } else if ((cell.vx === -1 && nextNode.vy === -1) || (cell.vy === -1 && nextNode.vx === -1)) {
+    } else if ((previousNode.vx === 1 && nextNode.vy === 1) || (previousNode.vy === -1 && nextNode.vx === -1)) {
         return Math.PI / 2;
-    } else if ((cell.vy === 1 && nextNode.vx === -1) || (cell.vx === -1 && nextNode.vy === -1)) {
+    } else if ((previousNode.vx === 1 && nextNode.vy === -1) || (previousNode.vy === 1 && nextNode.vx === -1)) {
         return Math.PI;
-    } else if ((cell.vx === 1 && nextNode.vy === 1) || (cell.vy === 1 && nextNode.vx === 1)) {
+    } else if ((previousNode.vx === -1 && nextNode.vy === -1) || (previousNode.vy === 1 && nextNode.vx === 1)) {
         return (Math.PI / 2) * 3;
     }
 }

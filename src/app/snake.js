@@ -12,7 +12,8 @@ export class Snake {
             x: initialX,
             y: initialY,
             vy: 0,
-            vx: 1
+            vx: 1,
+            isHead: true
         }, {
             x: initialX - 1,
             y: initialY,
@@ -22,7 +23,8 @@ export class Snake {
             x: initialX - 2,
             y: initialY,
             vy: 0,
-            vx: 1
+            vx: 1,
+            isTail: true
         }];
     }
 
@@ -42,14 +44,18 @@ export class Snake {
         }
 
         const snakeHead = this.snakeArray[0];
+        snakeHead.isCorner = snakeHead.vx !== this.vx || snakeHead.vy !== this.vy;
+        snakeHead.isHead = false;
+
         this.snakeArray.unshift({ 
             x: snakeHead.x + this.vx,
             y:snakeHead.y + this.vy,
             vx: this.vx,
             vy: this.vy,
-            isCorner: snakeHead.vx !== this.vx || snakeHead.vy !== this.vy
+            isHead: true,
         });
         this.snakeArray.pop();
+        this.snakeArray[this.snakeArray.length - 1].isTail = true;
     }
 
     grow() {
