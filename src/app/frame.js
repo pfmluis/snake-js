@@ -8,10 +8,7 @@ export const drawFrame = (map, texture) => {
     texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
 
     frame.addChild(map);
-    frame.beginTextureFill({
-        texture,
-        matrix: new Matrix()
-    });
+    frame.lineStyle(2, 0x303326);
     frame.drawRect(0, 0, MAP_WIDTH * CELL_WIDTH, MAP_HEIGHT * CELL_HEIGHT);
     
     return frame;

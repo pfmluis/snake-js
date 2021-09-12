@@ -14,7 +14,8 @@ export default () => {
         width: window.innerWidth,
         height: window.innerHeight, 
     });
-    
+
+    app.renderer.backgroundColor = 0x949c86;
     const loader = new Loader();
 
     loader
@@ -37,7 +38,7 @@ export default () => {
             const frame = drawFrame(map.mapContainer, resources.map.texture);
             app.stage.addChild(frame);
         
-            setupKeyboardMaps(snake);
+            setupKeyboardMaps(snake, map);
             setupTouchMaps(snake);
             
             const ticker = () => {

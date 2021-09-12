@@ -1,4 +1,4 @@
-export const setupKeyboardMaps = (snake) => {
+export const setupKeyboardMaps = (snake, map) => {
 
     addEventListener('keydown', ({ key }) => {
         switch(key) {
@@ -17,6 +17,9 @@ export const setupKeyboardMaps = (snake) => {
             case 'd':
             case 'ArrowRight':
                 snake.moveRight();
+                break;
+            case 'r':
+                map.restart();
                 break;
         }
 

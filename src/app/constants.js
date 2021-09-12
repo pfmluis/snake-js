@@ -6,4 +6,4 @@ export const CELL_HEIGHT = 16;
 
 export const CIRCULAR_MAP = true;
 
-export const GAME_SPEED = 100;
+export const GAME_SPEED = 50;

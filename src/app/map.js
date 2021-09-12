@@ -3,7 +3,7 @@ import { Container } from '@pixi/display';
 import { Graphics } from '@pixi/graphics';
 import { Matrix } from '@pixi/math';
 import { CELL_HEIGHT, CELL_WIDTH, CIRCULAR_MAP, MAP_HEIGHT, MAP_WIDTH } from './constants';
-import { getSnakeBodyTextureRotation, getSnakeCornerTextureRotation } from './utils/snake-helper';
+import { getSnakeBodyTextureRotation, getSnakeCornerTextureRotation, getSnakesInitialPosition } from './utils/snake-helper';
 
 export class Map {
 
@@ -27,7 +27,6 @@ export class Map {
     get mapContainer () {
         return this.mapContainer;
     }
-
 
     initializeMap() {
         for (let x = 0; x < MAP_WIDTH; x++) {
@@ -64,7 +63,7 @@ export class Map {
                     cell.isHead = snakeNode.isHead;
                     cell.isTail = snakeNode.isTail;
                 } else {
-                    cell.changed = !cell.empty
+                    cell.changed = !cell.empty;
                     cell.empty = true && !cell.hasApple;
                     cell.hasSnake = false;
                     cell.vx = 0;
@@ -77,6 +76,13 @@ export class Map {
                 }
             }
         }
+    }
+
+    restart() {
+        const { x, y } = getSnakesInitialPosition();
+        this.snake.spawn(x, y);
+        this.clearApple();
+        this.spawnApple();
     }
 
     redrawMap() {
@@ -199,7 +205,7 @@ export class Map {
             const x = snakeHead.x;
             const y = snakeHead.y;
 
-            return this.mapArray[x][y] === this.apple;
+            return this.mapArray?.[x]?.[y] === this.apple;
         }
 
         if (this.snake.isBitingSelf()) {

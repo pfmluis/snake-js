@@ -6,6 +6,20 @@ export class Snake {
         initialX,
         initialY
     ) {
+        this.spawn(initialX, initialY);
+    }
+
+    get snakeArray() {
+        return this.snakeArray;
+    }
+
+    set snakeArray (_) { }
+
+    get head() {
+        return this.snakeArray[0];
+    }
+
+    spawn(initialX, initialY) {
         this.vx = 0;
         this.vy = 0;
         this.snakeArray = [{
@@ -26,16 +40,6 @@ export class Snake {
             vx: 1,
             isTail: true
         }];
-    }
-
-    get snakeArray() {
-        return this.snakeArray;
-    }
-
-    set snakeArray (_) { }
-
-    get head() {
-        return this.snakeArray[0];
     }
 
     move() {
