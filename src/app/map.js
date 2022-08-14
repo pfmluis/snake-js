@@ -2,35 +2,49 @@ import { SCALE_MODES } from '@pixi/constants';
 import { Container } from '@pixi/display';
 import { Graphics } from '@pixi/graphics';
 import { Matrix } from '@pixi/math';
-import { CELL_HEIGHT, CELL_WIDTH, CIRCULAR_MAP, MAP_HEIGHT, MAP_WIDTH } from './constants';
+import { CELL_HEIGHT, CELL_WIDTH, CIRCULAR_MAP, GAME_COINTAINER_NAME, MAP_HEIGHT, MAP_WIDTH } from './constants';
 import { getSnakeBodyTextureRotation, getSnakeCornerTextureRotation, getSnakesInitialPosition } from './utils/snake-helper';
 
 export class Map {
 
-    mapArray;
-    mapContainer;
-    snake
-    apple
+    _mapArray;
+    _mapContainer;
+    _snake;
+    _apple;
+    _isGameOver;
+    _score;
+
 
     constructor(snake, resources) {
-        this.mapArray = [];
-        this.mapContainer = new Container();
+        this._mapArray = [];
+        this._mapContainer = new Container();
+        this._mapContainer.name = GAME_COINTAINER_NAME;
         this.initializeMap();
-        this.snake = snake;
+        this._snake = snake;
         this.resources = resources;
+        this._isGameOver = false;
+        this._score = 0;
     }
 
     get mapArray () {
-        return this.mapArray;
+        return this._mapArray;
     }
 
     get mapContainer () {
-        return this.mapContainer;
+        return this._mapContainer;
+    }
+
+    get isGameOver () {
+        return this._isGameOver;
+    }
+
+    get score() {
+        return this._score;
     }
 
     initializeMap() {
         for (let x = 0; x < MAP_WIDTH; x++) {
-            this.mapArray[x] = [];
+            this._mapArray[x] = [];
             for (let y = 0; y < MAP_HEIGHT; y++) {
                 const rectangle = new Graphics();
                 rectangle.drawRect(0, 0, CELL_WIDTH, CELL_HEIGHT);
@@ -38,8 +52,8 @@ export class Map {
                 rectangle.x = x * CELL_WIDTH;
                 rectangle.y = y * CELL_HEIGHT;
 
-                this.mapContainer.addChild(rectangle);
-                this.mapArray[x][y] = rectangle;
+                this._mapContainer.addChild(rectangle);
+                this._mapArray[x][y] = rectangle;
             }
         }
     }
@@ -47,9 +61,9 @@ export class Map {
     updateMap() {
         for (let x = 0; x < MAP_WIDTH; x++) {
             for (let y = 0; y < MAP_HEIGHT; y ++) {
-                const cell = this.mapArray[x][y];
-                const snakeNode = this.snake.snakeArray.find((node) => node.x === x && node.y === y);
-                const snakeNodeIndex = this.snake.snakeArray.indexOf(snakeNode);
+                const cell = this._mapArray[x][y];
+                const snakeNode = this._snake.snakeArray.find((node) => node.x === x && node.y === y);
+                const snakeNodeIndex = this._snake.snakeArray.indexOf(snakeNode);
 
                 if (snakeNode) {
                     cell.changed = true;
@@ -58,12 +72,12 @@ export class Map {
                     cell.vx = snakeNode.vx;
                     cell.vy = snakeNode.vy;
                     cell.isCorner = snakeNode.isCorner;
-                    cell.previousNode = this.snake.snakeArray[snakeNodeIndex];
-                    cell.nextNode = this.snake.snakeArray[snakeNodeIndex - 1];
+                    cell.previousNode = this._snake.snakeArray[snakeNodeIndex];
+                    cell.nextNode = this._snake.snakeArray[snakeNodeIndex - 1];
                     cell.isHead = snakeNode.isHead;
                     cell.isTail = snakeNode.isTail;
                 } else {
-                    cell.changed = !cell.empty;
+                    cell.changed = !cell.empty || cell.changed;
                     cell.empty = true && !cell.hasApple;
                     cell.hasSnake = false;
                     cell.vx = 0;
@@ -79,15 +93,18 @@ export class Map {
     }
 
     restart() {
+        this._isGameOver = false;
+        this._score = 0;
         const { x, y } = getSnakesInitialPosition();
-        this.snake.spawn(x, y);
+        this._snake.spawn(x, y);
         this.clearApple();
         this.spawnApple();
     }
 
     redrawMap() {
-        for(let i = 0; i < this.mapContainer.children.length; i++) {
-            const cell = this.mapContainer.getChildAt(i);
+        if (this._isGameOver) { return; }
+        for(let i = 0; i < this._mapContainer.children.length; i++) {
+            const cell = this._mapContainer.getChildAt(i);
             if (cell.changed) {
                 cell.clear();
                 if (cell.hasApple) {
@@ -156,27 +173,27 @@ export class Map {
     }
 
     spawnApple() {
-        const emptyCells = this.mapContainer.children.filter(cell => cell.empty);
+        const emptyCells = this._mapContainer.children.filter(cell => cell.empty);
         const randomCell = emptyCells[Math.round(Math.random() * emptyCells.length)];
-        const cellReference = this.mapContainer.children.find(_ => _ === randomCell);
+        const cellReference = this._mapContainer.children.find(_ => _ === randomCell);
 
         cellReference.hasApple = true;
         cellReference.empty = false;
         cellReference.changed = true;
 
-        this.apple = cellReference;
+        this._apple = cellReference;
     }
 
     clearApple() {
-        this.apple.hasApple = false;
-        this.apple.empty = true;
-        this.apple.changed = true;
+        this._apple.hasApple = false;
+        this._apple.empty = true;
+        this._apple.changed = true;
 
-        this.apple = undefined;
+        this._apple = undefined;
     }
 
     checkGameRules() {
-        const snakeHead = this.snake.head;
+        const snakeHead = this._snake.head;
 
         const isSnakeHeadOutOfBounds = () => {
             return snakeHead.x === MAP_WIDTH ||
@@ -186,7 +203,7 @@ export class Map {
         }
 
         if (!CIRCULAR_MAP && isSnakeHeadOutOfBounds()) {
-            throw 'SNAKE_OUT_OF_BOUNDS';
+            this._isGameOver = true;
         }
 
         if (CIRCULAR_MAP) {
@@ -205,17 +222,19 @@ export class Map {
             const x = snakeHead.x;
             const y = snakeHead.y;
 
-            return this.mapArray?.[x]?.[y] === this.apple;
+            return this._mapArray?.[x]?.[y] === this._apple;
         }
 
-        if (this.snake.isBitingSelf()) {
-            throw 'SNAKE_BIT_ITSELF';
+        if (this._snake.isBitingSelf()) {
+            this._isGameOver = true;
+            console.log(this._score);
         }
 
         if (didSnakeEatApple()) {
             this.clearApple();
             this.spawnApple();
-            this.snake.grow();
+            this._snake.grow();
+            this._score++;
         }
     }
 }
