@@ -4,7 +4,8 @@
   "description": "A snake version in javascript",
   "scripts": {
     "build": "webpack",
-    "start": "NODE_ENV=development webpack serve --open"
+    "start": "NODE_ENV=development webpack serve --open",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,13 @@
   },
   "homepage": "https://github.com/pfmluis/snake-js#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.18.10",
+    "babel-jest": "^28.1.3",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.2.0",
     "git-commit-msg-linter": "^4.1.3",
     "html-webpack-plugin": "^5.3.2",
+    "jest": "^28.1.3",
     "style-loader": "^3.2.1",
     "webpack": "^5.52.0",
     "webpack-cli": "^4.8.0",
