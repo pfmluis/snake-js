@@ -1,4 +1,3 @@
-import buildApple from './apple';
 import buildMakeCell from './cell';
 
 describe('Cell', () => {
