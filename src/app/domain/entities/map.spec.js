@@ -41,4 +41,11 @@ describe('Map', () => {
     makeMap({ x: 20,  y: 20})
     expect(makeCellStub.mock.calls.length).toBe(400)
   })
+
+  it('should populate cells', () => {
+    const { makeMap } = makeSut()
+
+    const map = makeMap({ x: 5, y: 5})
+    expect(map.getCells().length).toBe(25)
+  })
 });

@@ -1,5 +1,6 @@
 export default function buildMakeMap (makeCell) {
   return function({ x, y }) {
+    const cells = []
 
     if (!x) {
       throw new Error('Map width was not provided')
@@ -11,13 +12,14 @@ export default function buildMakeMap (makeCell) {
 
     for (let xx = 0; xx < x; xx++) {
       for(let yy = 0; yy < y; yy++) {
-        makeCell({ xx, yy })
+        cells.push(makeCell({ xx, yy }))
       }
     }
 
     return Object.freeze({
       getWidth: () => x,
       getHeight: () => y,
+      getCells: () => cells,
     })
   }
 }
