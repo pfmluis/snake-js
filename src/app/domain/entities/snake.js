@@ -1,6 +1,6 @@
 export default function buildMakeSnake(makeNode) {
   return function makeSnake({ initialSize, initialHeadPosition }) {
-    let directionX = 0, directionY = 0
+    let directionX = 1, directionY = 0
     let nodes = []
 
     validatePositionObject(initialHeadPosition)
@@ -49,6 +49,15 @@ export default function buildMakeSnake(makeNode) {
         
         directionY = 0
         directionX = 1
+      },
+      move: () => {
+        const headNode = nodes[0]
+        nodes.unshift(makeNode({
+          x: headNode.getX() + directionX,
+          y: headNode.getY() + directionY,
+        }))
+
+        nodes.pop()
       }
     })
   }

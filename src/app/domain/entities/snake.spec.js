@@ -38,7 +38,7 @@ describe('Snake', () => {
   it('should get direction', () => {
     const sut = makeSnake({ initialSize: 1, initialHeadPosition: { x: 0, y: 0 }})
 
-    expect(sut.getDirection()).toEqual({ x: 0, y: 0 })
+    expect(sut.getDirection()).toEqual({ x: 1, y: 0 })
   })
 
   it('should set direction up', () => {
@@ -73,6 +73,7 @@ describe('Snake', () => {
 
   it('should set direction left', () => {
     const sut = makeSnake({ initialSize: 1, initialHeadPosition: { x: 0, y: 0 }})
+    sut.lookDown()
     sut.lookLeft()
 
     expect(sut.getDirection()).toEqual({ x: -1, y: 0})
@@ -95,6 +96,7 @@ describe('Snake', () => {
 
   it('should not set direction right when looking left', () => {
     const sut = makeSnake({ initialSize: 1, initialHeadPosition: { x: 0, y: 0 }})
+    sut.lookDown()
     sut.lookLeft()
     sut.lookRight()
 
@@ -119,4 +121,20 @@ describe('Snake', () => {
     expect(sut.getNodes()[2].getX()).toBe(3)
     expect(sut.getNodes()[2].getY()).toBe(0)
   });
+
+  it('should move to right when looking right', () => {
+    const sut = makeSnake({ initialSize: 3, initialHeadPosition: { x: 5, y: 0}})
+
+    sut.move()
+    expect(sut.getNodes()[0].getX()).toBe(6)
+    expect(sut.getNodes()[0].getY()).toBe(0)
+
+    expect(sut.getNodes()[1].getX()).toBe(5)
+    expect(sut.getNodes()[1].getY()).toBe(0)
+
+    expect(sut.getNodes()[2].getX()).toBe(4)
+    expect(sut.getNodes()[2].getY()).toBe(0)
+
+    expect(sut.getSize()).toBe(3)
+  })
 });
