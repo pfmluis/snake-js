@@ -37,4 +37,5 @@ describe('Snake Node', () => {
 
     expect(() => sut.setPosition(1, -2)).toThrow()
   })
+
 })

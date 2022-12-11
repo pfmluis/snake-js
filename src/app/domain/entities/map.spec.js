@@ -46,6 +46,6 @@ describe('Map', () => {
     const { makeMap } = makeSut()
 
     const map = makeMap({ x: 5, y: 5})
-    expect(map.getCells().length).toBe(25)
+    expect(map.getCellsVector().length).toBe(25)
   })
 });

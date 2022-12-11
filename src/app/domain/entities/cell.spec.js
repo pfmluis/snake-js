@@ -40,4 +40,20 @@ describe('Cell', () => {
     sut.setHasSnake(true)
     expect(sut.hasSnake()).toBe(true)
   })
+
+  it('should be initialized as changed', () => {
+    const sut = makeCell({ x: 0, y: 0 })
+
+    expect(sut.hasChanged()).toBe(true)
+  })
+
+  it('should be able to set hasChanged', () => {
+    const sut = makeCell({ x: 0, y: 0 })
+
+    sut.setHasChanged(false)
+    expect(sut.hasChanged()).toBe(false)
+
+    sut.setHasChanged(true)
+    expect(sut.hasChanged()).toBe(true)
+  })
 })

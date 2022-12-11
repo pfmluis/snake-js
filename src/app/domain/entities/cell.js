@@ -2,6 +2,7 @@ export default function buildMakeCell() {
   return function({ x, y }) {
     let hasApple = false
     let hasSnake = false
+    let hasChanged = true
 
     return Object.freeze({
       getX: () => x,
@@ -10,6 +11,8 @@ export default function buildMakeCell() {
       setHasApple: (a) => { hasApple = a },
       hasSnake: () => hasSnake,
       setHasSnake: (s) => { hasSnake = s },
+      hasChanged: () => hasChanged,
+      setHasChanged: (hc) => hasChanged = Boolean(hc),
     })
   }
 }
