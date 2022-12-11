@@ -45,7 +45,9 @@ describe('Map', () => {
   it('should populate cells', () => {
     const { makeMap } = makeSut()
 
-    const map = makeMap({ x: 5, y: 5})
-    expect(map.getCellsVector().length).toBe(25)
+    const map = makeMap({ x: 5, y: 5 })
+    expect(map.getCells().length).toBe(5)
+    expect(map.getCells()[0].length).toBe(5)
+    expect(map.getCells()[4].length).toBe(5)
   })
 });

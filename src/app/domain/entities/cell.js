@@ -8,9 +8,9 @@ export default function buildMakeCell() {
       getX: () => x,
       getY: () => y,
       hasApple: () => hasApple,
-      setHasApple: (a) => { hasApple = a },
+      setHasApple: (a) => { hasApple = Boolean(a) },
       hasSnake: () => hasSnake,
-      setHasSnake: (s) => { hasSnake = s },
+      setHasSnake: (s) => { hasSnake = Boolean(s) },
       hasChanged: () => hasChanged,
       setHasChanged: (hc) => hasChanged = Boolean(hc),
     })

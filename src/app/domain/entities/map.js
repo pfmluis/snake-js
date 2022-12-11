@@ -1,5 +1,6 @@
 export default function buildMakeMap (makeCell) {
   return function({ x, y }) {
+    const cells = []
     const cellsVector = []
 
     if (!x) {
@@ -11,14 +12,18 @@ export default function buildMakeMap (makeCell) {
     }
 
     for (let yy = 0; yy < y; yy++) {
+      cells[yy] = []
       for(let xx = 0; xx < x; xx++) {
-        cellsVector.push(makeCell({ xx, yy }))
+        const cell = makeCell({ xx, yy })
+        cells[yy].push(cell)
+        cellsVector.push(cell)
       }
     }
 
     return Object.freeze({
       getWidth: () => x,
       getHeight: () => y,
+      getCells: () => cells,
       getCellsVector: () => cellsVector,
     })
   }

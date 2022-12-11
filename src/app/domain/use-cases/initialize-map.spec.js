@@ -37,6 +37,38 @@ describe('Initialize Map', () => {
 
     initializeMap({ map, snake, apple })
 
-    expect(map.getCellsVector().every(cell => cell.hasChanged)).toBe(true)
+    expect(
+      map.getCells()
+        .every(row => row
+          .every(cell => cell.hasChanged)
+        )
+    ).toBe(true)
+  })
+
+  it('should initialize snake cells', () => {
+    const map = makeMap()
+    const snake = makeSnake()
+    const apple = makeApple()
+
+    initializeMap({ map, snake, apple })
+
+    expect(map.getCells()[6][10].hasSnake()).toBe(true)
+    expect(map.getCells()[5][10].hasSnake()).toBe(true)
+    expect(map.getCells()[4][10].hasSnake()).toBe(true)
+    expect(map.getCells()[3][10].hasSnake()).toBe(true)
+
+    expect(map.getCellsVector()
+      .filter(cell => !cell.hasSnake()).length
+    ).toBe(map.getWidth() * map.getHeight() - snake.getSize()) // 20 by 20 map, minus snake size
+  })
+
+  it('should place apple', () => {
+    const map = makeMap()
+    const snake = makeSnake()
+    const apple = makeApple()
+
+    initializeMap({ map, snake, apple })
+
+    expect(map.getCellsVector().filter(cell => cell.hasApple()).length).toBeTruthy()
   })
 })

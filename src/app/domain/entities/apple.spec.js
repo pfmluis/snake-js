@@ -12,7 +12,7 @@ describe('Apple', () => {
     const emptyCells = [makeCell({ x: 0, y: 0}), makeCell({ x: 1, y: 0}), makeCell({ x: 2, y: 0 })]
     sut.placeApple(emptyCells)
 
-    const cell = emptyCells.find((cell) => cell.getX() == sut.getX() && cell.getY() == sut.getY())
+    const cell = emptyCells.find((cell) => cell.hasApple())
     expect(cell).toBeDefined()
   });
 })
