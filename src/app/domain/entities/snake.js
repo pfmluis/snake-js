@@ -1,6 +1,6 @@
 export default function buildMakeSnake(makeNode) {
   return function makeSnake({ initialSize, initialHeadPosition }) {
-    let directionX = 1, directionY = 0
+    let vx = 1, vy = 0
     let nodes = []
 
     validatePositionObject(initialHeadPosition)
@@ -24,40 +24,46 @@ export default function buildMakeSnake(makeNode) {
         const tail = nodes[nodes.length - 1]
         nodes.push({ ...tail })
       },
-      getDirection: () => ({ x: directionX, y: directionY}),
+      getDirection: () => ({ x: vx, y: vy}),
       getNodes: () => nodes,
       lookUp: () => {
-        if (directionY == 1) return
+        if (vy == 1) return
 
-        directionX = 0
-        directionY = -1
+        vx = 0
+        vy = -1
       },
       lookDown: () => {
-        if (directionY == -1) return
+        if (vy == -1) return
 
-        directionX = 0
-        directionY = 1
+        vx = 0
+        vy = 1
       },
       lookLeft: () => {
-        if (directionX == 1) return
+        if (vx == 1) return
         
-        directionY = 0
-        directionX = -1
+        vy = 0
+        vx = -1
       },
       lookRight: () => {
-        if (directionX == -1) return
+        if (vx == -1) return
         
-        directionY = 0
-        directionX = 1
+        vy = 0
+        vx = 1
       },
       move: () => {
         const headNode = nodes[0]
         nodes.unshift(makeNode({
-          x: headNode.getX() + directionX,
-          y: headNode.getY() + directionY,
+          x: headNode.getX() + vx,
+          y: headNode.getY() + vy,
         }))
 
         nodes.pop()
+      },
+      isBittingSelf: () => {
+        const [ head, ...body ] = nodes
+
+        return body
+          .some(node => node.getX() === head.getX() && node.getY() === head.getY())
       }
     })
   }

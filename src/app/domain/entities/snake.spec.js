@@ -123,7 +123,7 @@ describe('Snake', () => {
   });
 
   it('should move to right when looking right', () => {
-    const sut = makeSnake({ initialSize: 3, initialHeadPosition: { x: 5, y: 0}})
+    const sut = makeSnake({ initialSize: 3, initialHeadPosition: { x: 5, y: 0 }})
 
     sut.move()
     expect(sut.getNodes()[0].getX()).toBe(6)
@@ -136,5 +136,27 @@ describe('Snake', () => {
     expect(sut.getNodes()[2].getY()).toBe(0)
 
     expect(sut.getSize()).toBe(3)
+  })
+
+  it('should know if it is biting self', () => {
+    const sut = makeSnake({ initialSize: 5, initialHeadPosition: { x: 7, y: 0 }})
+
+    expect(sut.isBittingSelf()).toBe(false)
+  })
+
+  it('should be able to bite self', () => {
+    const sut = makeSnake({ initialSize: 5, initialHeadPosition: { x: 7, y: 0 }})
+
+    // Complete circle to bite self
+    sut.lookDown()
+    sut.move()
+
+    sut.lookLeft()
+    sut.move()
+
+    sut.lookUp()
+    sut.move()
+
+    expect(sut.isBittingSelf()).toBe(true)
   })
 });

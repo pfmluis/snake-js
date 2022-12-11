@@ -10,8 +10,8 @@ export default function buildMakeMap (makeCell) {
       throw new Error('Map height was not provided')
     }
 
-    for (let xx = 0; xx < x; xx++) {
-      for(let yy = 0; yy < y; yy++) {
+    for (let yy = 0; yy < y; yy++) {
+      for(let xx = 0; xx < x; xx++) {
         cells.push(makeCell({ xx, yy }))
       }
     }
