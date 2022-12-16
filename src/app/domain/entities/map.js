@@ -1,28 +1,28 @@
 export default function buildMakeMap (makeCell) {
-  return function({ x, y }) {
+  return function({ width, height }) {
     const cells = []
     const cellsVector = []
 
-    if (!x) {
+    if (!width) {
       throw new Error('Map width was not provided')
     }
 
-    if (!y) {
+    if (!height) {
       throw new Error('Map height was not provided')
     }
 
-    for (let yy = 0; yy < y; yy++) {
-      cells[yy] = []
-      for(let xx = 0; xx < x; xx++) {
-        const cell = makeCell({ xx, yy })
-        cells[yy].push(cell)
+    for (let y = 0; y < height; y++) {
+      cells[y] = []
+      for(let x = 0; x < width; x++) {
+        const cell = makeCell({ x, y })
+        cells[y].push(cell)
         cellsVector.push(cell)
       }
     }
 
     return Object.freeze({
-      getWidth: () => x,
-      getHeight: () => y,
+      getWidth: () => width,
+      getHeight: () => height,
       getCells: () => cells,
       getCellsVector: () => cellsVector,
     })

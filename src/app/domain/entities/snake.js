@@ -25,6 +25,7 @@ export default function buildMakeSnake(makeNode) {
         nodes.push({ ...tail })
       },
       getDirection: () => ({ x: vx, y: vy}),
+      getHead: () => nodes[0],
       getNodes: () => nodes,
       lookUp: () => {
         if (vy == 1) return

@@ -159,4 +159,12 @@ describe('Snake', () => {
 
     expect(sut.isBittingSelf()).toBe(true)
   })
+
+  it('should get snake head', () => {
+    const sut = makeSnake({ initialSize: 3, initialHeadPosition: { x: 5, y: 0 }})
+
+    const snakeHead = sut.getHead()
+    expect(snakeHead.getX()).toBe(5)
+    expect(snakeHead.getY()).toBe(0)
+  })
 });

@@ -9,7 +9,7 @@ describe('Initialize Map', () => {
   const makeMap = () => {
     const buildMap = buildMakeMap(buildMakeCell())
 
-    return buildMap({ x: 20, y: 20 })
+    return buildMap({ width: 20, height: 20 })
   }
 
   const makeSnake = () => {
