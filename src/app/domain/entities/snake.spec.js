@@ -1,5 +1,6 @@
 import buildMakeSnake from './snake'
 import buildMakeNode from './node'
+import buildMakeCell from './cell';
 
 describe('Snake', () => {
   const makeNode = buildMakeNode()
@@ -166,5 +167,21 @@ describe('Snake', () => {
     const snakeHead = sut.getHead()
     expect(snakeHead.getX()).toBe(5)
     expect(snakeHead.getY()).toBe(0)
+  })
+
+  it(`should return true if snake's head intercepts the given cell`, () => {
+    const sut = makeSnake({ initialSize: 3, initialHeadPosition: { x: 5, y: 0 }})
+    const makeCell = buildMakeCell()
+
+    const result = sut.isBitting(makeCell({ x: 5, y: 0}))
+    expect(result).toBe(true)
+  })
+
+  it(`should return false if snake's head does not intercept the given cell`, () => {
+    const sut = makeSnake({ initialSize: 3, initialHeadPosition: { x: 5, y: 0 }})
+    const makeCell = buildMakeCell()
+
+    const result = sut.isBitting(makeCell({ x: 0, y: 0}))
+    expect(result).toBe(false)
   })
 });

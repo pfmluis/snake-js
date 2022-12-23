@@ -2,7 +2,7 @@ import { SCALE_MODES } from '@pixi/constants';
 import { Container } from '@pixi/display';
 import { Graphics } from '@pixi/graphics';
 import { Matrix } from '@pixi/math';
-import { CELL_HEIGHT, CELL_WIDTH, CIRCULAR_MAP, GAME_COINTAINER_NAME, MAP_HEIGHT, MAP_WIDTH } from './constants';
+import { CELL_HEIGHT, CELL_WIDTH, CIRCULAR_MAP, GAME_CONTAINER_NAME, MAP_HEIGHT, MAP_WIDTH } from './constants';
 import { getSnakeBodyTextureRotation, getSnakeCornerTextureRotation, getSnakesInitialPosition } from './utils/snake-helper';
 
 export class Map {
@@ -18,7 +18,7 @@ export class Map {
     constructor(snake, resources) {
         this._mapArray = [];
         this._mapContainer = new Container();
-        this._mapContainer.name = GAME_COINTAINER_NAME;
+        this._mapContainer.name = GAME_CONTAINER_NAME;
         this.initializeMap();
         this._snake = snake;
         this.resources = resources;

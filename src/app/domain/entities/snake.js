@@ -65,6 +65,11 @@ export default function buildMakeSnake(makeNode) {
 
         return body
           .some(node => node.getX() === head.getX() && node.getY() === head.getY())
+      },
+      isBitting: (cell) => {
+        const head = nodes[0]
+        return head.getX() === cell.getX() &&
+          head.getY() === cell.getY()
       }
     })
   }

@@ -1,6 +1,11 @@
 import buildMakeApple from './apple';
 import buildMakeCell from './cell';
-import buildMakeNode from './node';
+
+const makeCellMock = () => ({
+  setHasApple: (sha) => sha,
+  getX: () => 0,
+  getY: () => 0,
+})
 
 describe('Apple', () => {
   const makeApple = buildMakeApple()
@@ -18,4 +23,17 @@ describe('Apple', () => {
     const cellWithApple = cells.find((cell) => cell.hasApple())
     expect(cellWithApple).toBeDefined()
   });
+
+  it('should remove apple from map', () => {
+    const sut = makeApple()
+    const cells = [makeCellMock(), makeCellMock(), makeCellMock(), makeCellMock()]
+    const cellMock = makeCellMock()
+    const setHasAppleSpy = jest.spyOn(cellMock, 'setHasApple')
+    const cellsMatrix = [[cellMock, cells[1]], [cells[2], cells[3]]]
+    
+    sut.placeApple(cells)
+    sut.removeApple(cellsMatrix)
+
+    expect(setHasAppleSpy).toHaveBeenCalledWith(false)
+  })
 })
