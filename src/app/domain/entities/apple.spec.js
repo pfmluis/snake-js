@@ -3,6 +3,7 @@ import buildMakeCell from './cell';
 
 const makeCellMock = () => ({
   setHasApple: (sha) => sha,
+  setHasChanged: (shc) => shc, 
   getX: () => 0,
   getY: () => 0,
 })
@@ -24,16 +25,33 @@ describe('Apple', () => {
     expect(cellWithApple).toBeDefined()
   });
 
+  it('should call hasChanged on cell where apple is placed', () => {
+    const sut = makeApple()
+
+    const cells = [makeCell({ x: 0, y: 0}), makeCell({ x: 1, y: 0}), makeCell({ x: 2, y: 0 })]
+    // setHasChanged to false in all cells
+    cells.forEach(cell => {
+      cell.setHasChanged(false)
+    })
+
+    sut.placeApple(cells)
+
+    const cellWithApple = cells.find((cell) => cell.hasApple())
+    expect(cellWithApple.hasChanged()).toBe(true)
+  });
+
   it('should remove apple from map', () => {
     const sut = makeApple()
     const cells = [makeCellMock(), makeCellMock(), makeCellMock(), makeCellMock()]
     const cellMock = makeCellMock()
     const setHasAppleSpy = jest.spyOn(cellMock, 'setHasApple')
+    const setHasChangedSpy = jest.spyOn(cellMock, 'setHasChanged')
     const cellsMatrix = [[cellMock, cells[1]], [cells[2], cells[3]]]
     
     sut.placeApple(cells)
     sut.removeApple(cellsMatrix)
 
     expect(setHasAppleSpy).toHaveBeenCalledWith(false)
+    expect(setHasChangedSpy).toHaveBeenCalledWith(true)
   })
 })
